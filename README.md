@@ -1,6 +1,4 @@
-# astar
-p5 project implementing the A* search algorithm
-
+# A* search algorithm
 
 This is a p5 implementation of the Coding Challenge project <a href="https://www.youtube.com/watch?v=aKYlikFAV4k&ab_channel=TheCodingTrain">here</a>.
 
