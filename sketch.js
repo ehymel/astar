@@ -1,5 +1,5 @@
-let cols = 30;
-let rows = 30;
+let cols = 25;
+let rows = 25;
 let grid = [];
 let openSet = [];
 let closedSet = [];
@@ -87,6 +87,8 @@ function setup() {
 function draw() {
     background(100);
 
+    totalPath = [];
+
     if (openSet.length > 0) {
         let indexOfLowestFScore = 0;
         for (let i = 0; i < openSet.length; i++) {
@@ -121,6 +123,7 @@ function draw() {
                     openSet.push(neighbor);
                 }
             }
+            totalPath = reconstructPath(current);
         }
 
         for (let i = 0; i < cols; i++) {
@@ -128,9 +131,9 @@ function draw() {
                 grid[i][j].show(color(255));
             }
         }
-        for (let i = 0; i < closedSet.length; i++) {
-            closedSet[i].show(color(255, 0, 0));
-        }
+        // for (let i = 0; i < closedSet.length; i++) {
+        //     closedSet[i].show(color(255, 0, 0));
+        // }
         for (let i = 0; i < openSet.length; i++) {
             openSet[i].show(color(0, 255, 0));
         }
