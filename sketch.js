@@ -3,6 +3,7 @@ let rows = 5;
 let grid = [];
 let openSet = [];
 let closedSet = [];
+let totalPath = [];
 let start;
 let end;
 let w, h;
@@ -15,6 +16,7 @@ class Node {
         this.g = 0;
         this.h = 0;
         this.neighbors = [];
+        this.cameFrom = undefined;
     }
 
     show(col) {
@@ -36,9 +38,13 @@ class Node {
         if (j > 0) {
             this.neighbors.push(grid[i][j - 1]);
         }
-        if (i < rows - 1) {
+        if (j < rows - 1) {
             this.neighbors.push(grid[i][j + 1]);
         }
+    }
+
+    setHeuristic(goalNode) {
+        this.h = dist(this.i, this.j, goalNode.i, goalNode.j);
     }
 }
 
@@ -64,12 +70,17 @@ function setup() {
         }
     }
 
-    console.log(grid);
-
     start = grid[0][0];
-    openSet.push(start);
-
     end = grid[cols - 1][rows - 1];
+
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j].setHeuristic(end);
+        }
+    }
+
+    openSet.push(start);
+    start.f = start.h;
 }
 
 function draw() {
@@ -85,10 +96,11 @@ function draw() {
 
         let current = openSet[indexOfLowestFScore];
 
-        console.log(current);
-
         if (current === end) {
-            console.log('DONE!');
+            totalPath = reconstructPath(current);
+            for (let i = 0; i < totalPath.length; i++) {
+                totalPath[i].show(color(0, 0, 255));
+            }
             noLoop();
         } else {
             removeFromArray(openSet, current);
@@ -100,29 +112,31 @@ function draw() {
                     continue;
                 }
 
-                let tempG = current.g + 1;
+                let tempG = current.g + 1; // assumes distance from one node to the next is 1
+
+                if (tempG < neighbor.g) {
+                    neighbor.g = tempG;
+                    neighbor.f = neighbor.g + neighbor.h;
+                    neighbor.cameFrom = current;
+                }
 
                 if (!openSet.includes(neighbor)) {
                     openSet.push(neighbor);
-                } else if (tempG >= neighbor.g) {
-                    continue;
-                }
-
-                neighbor.h = heuristic(neighbor, end);
-                neighbor.f = neighbor.g + neighbor.h;
-            }
-
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    grid[i][j].show(color(255));
                 }
             }
-            for (let i = 0; i < closedSet.length; i++) {
-                closedSet[i].show(color(255, 0, 0));
+        }
+
+        // display
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                grid[i][j].show(color(255));
             }
-            for (let i = 0; i < openSet.length; i++) {
-                openSet[i].show(color(0, 255, 0));
-            }
+        }
+        for (let i = 0; i < closedSet.length; i++) {
+            closedSet[i].show(color(255, 0, 0));
+        }
+        for (let i = 0; i < openSet.length; i++) {
+            openSet[i].show(color(0, 255, 0));
         }
 
     } else {
@@ -131,14 +145,19 @@ function draw() {
     }
 }
 
+function reconstructPath(current) {
+    totalPath.push(current);
+    while (current.cameFrom !== undefined) {
+        current = current.cameFrom;
+        totalPath.push(current);
+    }
+    return totalPath;
+}
+
 function removeFromArray(arr, el) {
     for (let i = arr.length-1; i >= 0; i--) {
         if (el === arr[i]) {
             arr.splice(i, 1);
         }
     }
-}
-
-function heuristic(node1, node2) {
-    return (dist(node1.i, node1.j, node2.i, node2.j));
 }
