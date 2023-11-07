@@ -1,5 +1,5 @@
-let cols = 5;
-let rows = 5;
+let cols = 30;
+let rows = 30;
 let grid = [];
 let openSet = [];
 let closedSet = [];
@@ -12,9 +12,9 @@ class Node {
     constructor(i, j) {
         this.i = i;
         this.j = j;
-        this.f = 0;
-        this.g = 0;
-        this.h = 0;
+        this.f = 999999999;
+        this.g = 999999999;
+        this.h = undefined;
         this.neighbors = [];
         this.cameFrom = undefined;
     }
@@ -80,6 +80,7 @@ function setup() {
     }
 
     openSet.push(start);
+    start.g = 0;
     start.f = start.h;
 }
 
@@ -98,10 +99,6 @@ function draw() {
 
         if (current === end) {
             totalPath = reconstructPath(current);
-            for (let i = 0; i < totalPath.length; i++) {
-                totalPath[i].show(color(0, 0, 255));
-            }
-            noLoop();
         } else {
             removeFromArray(openSet, current);
             closedSet.push(current);
@@ -126,7 +123,6 @@ function draw() {
             }
         }
 
-        // display
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 grid[i][j].show(color(255));
@@ -137,6 +133,9 @@ function draw() {
         }
         for (let i = 0; i < openSet.length; i++) {
             openSet[i].show(color(0, 255, 0));
+        }
+        for (let i = 0; i < totalPath.length; i++) {
+            totalPath[i].show(color(0, 0, 255));
         }
 
     } else {
