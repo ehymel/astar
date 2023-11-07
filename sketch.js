@@ -82,84 +82,27 @@ function setup() {
     openSet.push(start);
     start.g = 0;
     start.f = start.h;
+
+    astar = new Astar()
 }
 
 function draw() {
     background(100);
 
-    totalPath = [];
+    astar.findPath(start, end);
 
-    if (openSet.length > 0) {
-        let indexOfLowestFScore = 0;
-        for (let i = 0; i < openSet.length; i++) {
-            if (openSet[i].f < openSet[indexOfLowestFScore].f) {
-                indexOfLowestFScore = i;
-            }
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j].show(color(255));
         }
-
-        let current = openSet[indexOfLowestFScore];
-
-        if (current === end) {
-            totalPath = reconstructPath(current);
-        } else {
-            removeFromArray(openSet, current);
-            closedSet.push(current);
-
-            for (let i = 0; i < current.neighbors.length; i++) {
-                let neighbor = current.neighbors[i];
-                if (closedSet.includes(neighbor)) {
-                    continue;
-                }
-
-                let tempG = current.g + 1; // assumes distance from one node to the next is 1
-
-                if (tempG < neighbor.g) {
-                    neighbor.g = tempG;
-                    neighbor.f = neighbor.g + neighbor.h;
-                    neighbor.cameFrom = current;
-                }
-
-                if (!openSet.includes(neighbor)) {
-                    openSet.push(neighbor);
-                }
-            }
-            totalPath = reconstructPath(current);
-        }
-
-        for (let i = 0; i < cols; i++) {
-            for (let j = 0; j < rows; j++) {
-                grid[i][j].show(color(255));
-            }
-        }
-        // for (let i = 0; i < closedSet.length; i++) {
-        //     closedSet[i].show(color(255, 0, 0));
-        // }
-        for (let i = 0; i < openSet.length; i++) {
-            openSet[i].show(color(0, 255, 0));
-        }
-        for (let i = 0; i < totalPath.length; i++) {
-            totalPath[i].show(color(0, 0, 255));
-        }
-
-    } else {
-        // no Solution;
-        console.log('No solution');
     }
-}
-
-function reconstructPath(current) {
-    totalPath.push(current);
-    while (current.cameFrom !== undefined) {
-        current = current.cameFrom;
-        totalPath.push(current);
+    // for (let i = 0; i < this.closedSet.length; i++) {
+    //     this.closedSet[i].show(color(255, 0, 0));
+    // }
+    for (let i = 0; i < astar.openSet.length; i++) {
+        astar.openSet[i].show(color(0, 255, 0));
     }
-    return totalPath;
-}
-
-function removeFromArray(arr, el) {
-    for (let i = arr.length-1; i >= 0; i--) {
-        if (el === arr[i]) {
-            arr.splice(i, 1);
-        }
+    for (let i = 0; i < astar.totalPath.length; i++) {
+        astar.totalPath[i].show(color(0, 0, 255));
     }
 }
