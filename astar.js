@@ -1,8 +1,8 @@
 class Astar {
     constructor() {
-        this.totalPath = [];
-        this.openSet = [];
-        this.closedSet = [];
+        this.openSet = [];      // array of nodes to be evaluated for next step in search
+        this.closedSet = [];    // array of nodes already evaluated along the way
+        this.totalPath = [];    // found path from start node to current node during search
     }
 
     findPath(start, goal) {
@@ -49,22 +49,19 @@ class Astar {
                 }
                 this.totalPath = this.reconstructPath(current);
             }
-
-
         } else {
-            // no Solution;
             console.log('No solution');
         }
-
     }
 
-    reconstructPath(current) {
-        this.totalPath.push(current);
-        while (current.cameFrom !== undefined) {
-            current = current.cameFrom;
-            this.totalPath.push(current);
+    reconstructPath(currentNode) {
+        let path = [];
+        path.push(currentNode);
+        while (currentNode.cameFrom !== undefined) {
+            currentNode = currentNode.cameFrom;
+            path.push(currentNode);
         }
-        return this.totalPath;
+        return path;
     }
 
     removeFromArray(arr, el) {
