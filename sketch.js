@@ -28,7 +28,6 @@ function setup() {
     for (let i = 0; i < obstaclesCount; i++) {
         let col = Math.floor(random(1, cols));
         let row = Math.floor(random(1, rows));
-        console.log(col, row);
         if (col === cols-1 && row === rows-1) {
             continue;
         }
@@ -81,26 +80,29 @@ function mouseClicked() {
     let j = Math.floor(mouseY / h);
 
     if (i >= 0 && i <= cols-1 && j >=0 && j <= rows-1) {
-        let nodeToChange = grid[i][j];
         if (i === 0 && j === 0) {
             return;
         }
         if (i === cols-1 && j === rows-1) {
             return;
         }
-        nodeToChange.blocked = !nodeToChange.blocked;
+        grid[i][j].blocked = !grid[i][j].blocked;
     }
 }
 
 function startSearch() {
-    // reset neighbors to all nodes since obstacles can be changed by user
+    resetNodes();
+
+    astar = new Astar();
+    search = true;
+}
+
+function resetNodes() {
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
+            grid[i][j].cameFrom = undefined;
             grid[i][j].neighbors = [];
             grid[i][j].addNeighbors(grid);
         }
     }
-
-    astar = new Astar();
-    search = true;
 }

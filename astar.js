@@ -3,7 +3,6 @@ class Astar {
         this.openSet = [];      // array of nodes to be evaluated for next step in search
         this.closedSet = [];    // array of nodes already evaluated along the way
         this.totalPath = [];    // found path from start node to current node during search
-        this.success = false;
     }
 
     findPath(start, goal) {
