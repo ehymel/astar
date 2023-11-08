@@ -6,6 +6,10 @@ class Astar {
     }
 
     findPath(start, goal) {
+        if (this.openSet.length === 0) {
+            this.openSet.push(start);
+        }
+
         // reset totalPath each time through
         this.totalPath = [];
 
@@ -55,12 +59,12 @@ class Astar {
     }
 
     reconstructPath(current) {
-        totalPath.push(current);
+        this.totalPath.push(current);
         while (current.cameFrom !== undefined) {
             current = current.cameFrom;
-            totalPath.push(current);
+            this.totalPath.push(current);
         }
-        return totalPath;
+        return this.totalPath;
     }
 
     removeFromArray(arr, el) {
