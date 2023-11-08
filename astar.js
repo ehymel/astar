@@ -3,6 +3,7 @@ class Astar {
         this.openSet = [];      // array of nodes to be evaluated for next step in search
         this.closedSet = [];    // array of nodes already evaluated along the way
         this.totalPath = [];    // found path from start node to current node during search
+        this.success = false;
     }
 
     findPath(start, goal) {
@@ -24,6 +25,8 @@ class Astar {
             let current = this.openSet[indexOfLowestFScore];
 
             if (current === goal) {
+                console.log('success!');
+                this.success = true;
                 this.totalPath = this.reconstructPath(current);
             } else {
                 this.removeFromArray(this.openSet, current);

@@ -1,6 +1,7 @@
 let cols = 25;
 let rows = 25;
 let grid = [];
+let obstaclesCount = Math.floor(cols * rows * 0.3);
 let start, end;
 let w, h;
 
@@ -20,6 +21,16 @@ function setup() {
         for (let j = 0; j < rows; j++) {
             grid[i][j] = new Node(i, j);
         }
+    }
+
+    // make obstacles
+    for (let i = 0; i < obstaclesCount; i++) {
+        let col = Math.floor(random(1, cols));
+        let row = Math.floor(random(1, rows));
+        if (col === cols-1 && row === rows-1) {
+            continue;
+        }
+        grid[col][row].blocked = true;
     }
 
     // define neighbors to all nodes
@@ -61,5 +72,8 @@ function draw() {
     // }
     for (let i = 0; i < astar.totalPath.length; i++) {
         astar.totalPath[i].show(color(0, 0, 255));
+    }
+    if (astar.success) {
+        noLoop();
     }
 }
