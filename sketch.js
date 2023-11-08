@@ -1,9 +1,10 @@
-let cols = 25;
-let rows = 25;
+let cols = 5;
+let rows = 5;
 let grid = [];
 let obstaclesCount = Math.floor(cols * rows * 0.3);
 let start, end;
 let w, h;
+let search = false;
 
 function setup() {
     createCanvas(400, 400);
@@ -27,17 +28,11 @@ function setup() {
     for (let i = 0; i < obstaclesCount; i++) {
         let col = Math.floor(random(1, cols));
         let row = Math.floor(random(1, rows));
+        console.log(col, row);
         if (col === cols-1 && row === rows-1) {
             continue;
         }
         grid[col][row].blocked = true;
-    }
-
-    // define neighbors to all nodes
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j].addNeighbors(grid);
-        }
     }
 
     // set start and end nodes
@@ -54,26 +49,58 @@ function setup() {
     start.g = 0;
     start.f = start.h;
 
-    astar = new Astar();
+    astar = new Astar(start, end);
+
+    startSearchButton = createButton('Start search');
+    startSearchButton.position(50, 25);
+    startSearchButton.mouseClicked(startSearch);
 }
 
 function draw() {
     background(100);
 
-    astar.findPath(start, end);
+    if (search) {
+        astar.findPath(start, end);
+    }
 
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             grid[i][j].show(color(255));
         }
     }
-    // for (let i = 0; i < astar.openSet.length; i++) {
-    //     astar.openSet[i].show(color(0, 255, 0));
-    // }
+    for (let i = 0; i < astar.openSet.length; i++) {
+        astar.openSet[i].show(color(0, 255, 0));
+    }
     for (let i = 0; i < astar.totalPath.length; i++) {
         astar.totalPath[i].show(color(0, 0, 255));
     }
-    if (astar.success) {
-        noLoop();
+}
+
+function mouseClicked() {
+    let i = Math.floor(mouseX / w);
+    let j = Math.floor(mouseY / h);
+
+    if (i >= 0 && i <= cols-1 && j >=0 && j <= rows-1) {
+        let nodeToChange = grid[i][j];
+        if (i === 0 && j === 0) {
+            return;
+        }
+        if (i === cols-1 && j === rows-1) {
+            return;
+        }
+        nodeToChange.blocked = !nodeToChange.blocked;
     }
+}
+
+function startSearch() {
+    // reset neighbors to all nodes since obstacles can be changed by user
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j].neighbors = [];
+            grid[i][j].addNeighbors(grid);
+        }
+    }
+
+    astar = new Astar();
+    search = true;
 }
