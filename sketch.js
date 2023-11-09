@@ -1,7 +1,7 @@
-let cols = 5;
-let rows = 5;
+let cols = 25;
+let rows = 25;
 let grid = [];
-let obstaclesCount = Math.floor(cols * rows * 0.3);
+let obstaclesCount = Math.floor(cols * rows * 0.45);
 let start, end;
 let w, h;
 let search = false;
@@ -26,8 +26,11 @@ function setup() {
 
     // make obstacles
     for (let i = 0; i < obstaclesCount; i++) {
-        let col = Math.floor(random(1, cols));
-        let row = Math.floor(random(1, rows));
+        let col = Math.floor(random(0, cols));
+        let row = Math.floor(random(0, rows));
+        if (col === 0 && row === 0) {
+            continue;
+        }
         if (col === cols-1 && row === rows-1) {
             continue;
         }
