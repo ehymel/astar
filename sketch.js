@@ -93,15 +93,26 @@ function mouseClicked() {
 function startSearch() {
     resetNodes();
 
+    start.g = 0;
+    start.f = start.h;
+
     astar = new Astar();
     search = true;
 }
 
 function resetNodes() {
+    // since grid is passed to addNeighbors function,
+    // reset all nodes, then separately add neighbors
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             grid[i][j].cameFrom = undefined;
             grid[i][j].neighbors = [];
+            grid[i][j].f = 999999999;
+            grid[i][j].g = 999999999;
+        }
+    }
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
             grid[i][j].addNeighbors(grid);
         }
     }
