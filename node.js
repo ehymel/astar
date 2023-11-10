@@ -29,10 +29,22 @@ class Node {
         let j = this.j;
 
         if (i > 0) {
-            this.neighbors.push(grid[i-1][j]);
+            this.neighbors.push(grid[i - 1][j]);
+            if (j > 0) {
+                this.neighbors.push(grid[i - 1][j - 1]);
+            }
+            if (j < rows - 1) {
+                this.neighbors.push(grid[i - 1][j + 1]);
+            }
         }
         if (i < cols - 1) {
-            this.neighbors.push(grid[i+1][j]);
+            this.neighbors.push(grid[i + 1][j]);
+            if (j > 0) {
+                this.neighbors.push(grid[i + 1][j - 1]);
+            }
+            if (j < rows - 1) {
+                this.neighbors.push(grid[i + 1][j + 1]);
+            }
         }
         if (j > 0) {
             this.neighbors.push(grid[i][j - 1]);

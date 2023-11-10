@@ -26,6 +26,8 @@ function setup() {
     // set start and end nodes
     start = grid[0][0];
     end = grid[cols - 1][rows - 1];
+    start.blocked = false;
+    end.blocked = false;
 
     // set heuristic for each node on grid
     for (let i = 0; i < cols; i++) {
