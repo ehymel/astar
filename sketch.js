@@ -48,7 +48,7 @@ function setup() {
 }
 
 function draw() {
-    background(100);
+    background(255);
 
     if (search) {
         astar.findPath(start, end);
@@ -59,12 +59,22 @@ function draw() {
             grid[i][j].show(color(255));
         }
     }
-    for (let i = 0; i < astar.openSet.length; i++) {
-        astar.openSet[i].show(color(0, 255, 0));
-    }
+    start.show(color(0, 255, 0));
+    end.show(color(255, 0, 0));
+
+    // for (let i = 0; i < astar.openSet.length; i++) {
+    //     astar.openSet[i].show(color(0, 255, 0));
+    // }
+
+    noFill();
+    stroke('orange');
+    strokeWeight(h/3);
+    beginShape();
     for (let i = 0; i < astar.totalPath.length; i++) {
-        astar.totalPath[i].show(color(0, 0, 255));
+        let path = astar.totalPath[i];
+        vertex(path.i * w + w/2, path.j * h + h/2);
     }
+    endShape();
 }
 
 function mouseClicked() {

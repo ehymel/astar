@@ -27,7 +27,6 @@ class Astar {
 
             if (current === goal) {
                 console.log('success!');
-                this.success = true;
             } else {
                 this.removeFromArray(this.openSet, current);
                 this.closedSet.push(current);
