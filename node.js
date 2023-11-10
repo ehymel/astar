@@ -7,12 +7,12 @@ class Node {
         this.h = undefined;
         this.neighbors = [];
         this.cameFrom = undefined;
-        this.blocked = false;
+        this.blocked = random(1) < 0.3;
     }
 
     show(col) {
         if (this.blocked) {
-            col = color(0, 0, 0);
+            col = color(0);
         }
 
         fill(col);
