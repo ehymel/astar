@@ -1,5 +1,5 @@
-let cols = 25;
-let rows = 25;
+let cols = 50;
+let rows = 50;
 let grid = [];
 let start, end;
 let w, h;

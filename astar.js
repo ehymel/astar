@@ -10,6 +10,8 @@ class Astar {
         if (this.openSet.length === 0 && !this.closedSet.includes(start)) {
             this.openSet.push(start);
         }
+        let diagonalDistance = sqrt(2);
+        let d;
 
         if (this.openSet.length > 0) {
             this.lastGoodPath = this.totalPath;
@@ -36,7 +38,8 @@ class Astar {
                         continue;
                     }
 
-                    let tempG = current.g + 1; // assumes distance from one node to the next is 1
+                    d = (current.i === neighbor.i || current.j === neighbor.j) ? 1 : diagonalDistance;
+                    let tempG = current.g + d; // assumes distance from one node to the next is 1
 
                     if (tempG < neighbor.g) {
                         neighbor.g = tempG;
