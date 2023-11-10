@@ -30,6 +30,7 @@ function setup() {
     // set heuristic for each node on grid
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
+            grid[i][j].addNeighbors(grid);
             grid[i][j].setHeuristic(end);
         }
     }
@@ -95,14 +96,8 @@ function resetNodes() {
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             grid[i][j].cameFrom = undefined;
-            grid[i][j].neighbors = [];
             grid[i][j].f = 999999999;
             grid[i][j].g = 999999999;
-        }
-    }
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j].addNeighbors(grid);
         }
     }
 }

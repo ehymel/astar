@@ -33,7 +33,7 @@ class Astar {
 
                 for (let i = 0; i < current.neighbors.length; i++) {
                     let neighbor = current.neighbors[i];
-                    if (this.closedSet.includes(neighbor)) {
+                    if (this.closedSet.includes(neighbor) || neighbor.blocked) {
                         continue;
                     }
 

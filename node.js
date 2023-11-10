@@ -27,31 +27,18 @@ class Node {
 
         let i = this.i;
         let j = this.j;
-        let nbr;
 
         if (i > 0) {
-            nbr = grid[i-1][j];
-            if (!nbr.blocked) {
-                this.neighbors.push(nbr);
-            }
+            this.neighbors.push(grid[i-1][j]);
         }
         if (i < cols - 1) {
-            nbr = grid[i+1][j];
-            if (!nbr.blocked) {
-                this.neighbors.push(nbr);
-            }
+            this.neighbors.push(grid[i+1][j]);
         }
         if (j > 0) {
-            nbr = grid[i][j - 1];
-            if (!nbr.blocked) {
-                this.neighbors.push(nbr);
-            }
+            this.neighbors.push(grid[i][j - 1]);
         }
         if (j < rows - 1) {
-            nbr = grid[i][j + 1];
-            if (!nbr.blocked) {
-                this.neighbors.push(nbr);
-            }
+            this.neighbors.push(grid[i][j + 1]);
         }
     }
 
