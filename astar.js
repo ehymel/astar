@@ -3,17 +3,17 @@ class Astar {
         this.openSet = [];      // array of nodes to be evaluated for next step in search
         this.closedSet = [];    // array of nodes already evaluated along the way
         this.totalPath = [];    // found path from start node to current node during search
+        this.lastGoodPath = [];
     }
 
     findPath(start, goal) {
-        if (this.openSet.length === 0) {
+        if (this.openSet.length === 0 && !this.closedSet.includes(start)) {
             this.openSet.push(start);
         }
 
-        // reset totalPath each time through
-        this.totalPath = [];
-
         if (this.openSet.length > 0) {
+            this.lastGoodPath = this.totalPath;
+            this.totalPath = [];
             let indexOfLowestFScore = 0;
             for (let i = 0; i < this.openSet.length; i++) {
                 if (this.openSet[i].f < this.openSet[indexOfLowestFScore].f) {
@@ -26,7 +26,6 @@ class Astar {
             if (current === goal) {
                 console.log('success!');
                 this.success = true;
-                this.totalPath = this.reconstructPath(current);
             } else {
                 this.removeFromArray(this.openSet, current);
                 this.closedSet.push(current);
@@ -49,10 +48,11 @@ class Astar {
                         this.openSet.push(neighbor);
                     }
                 }
-                this.totalPath = this.reconstructPath(current);
             }
+            this.totalPath = this.reconstructPath(current);
         } else {
             console.log('No solution');
+            this.totalPath = this.lastGoodPath;
         }
     }
 
