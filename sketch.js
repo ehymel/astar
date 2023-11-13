@@ -40,7 +40,7 @@ function setup() {
     start.g = 0;
     start.f = start.h;
 
-    astar = new Astar(start, end);
+    astar = new Astar();
 
     startSearchButton = createButton('Start search');
     startSearchButton.position(50, 25);
